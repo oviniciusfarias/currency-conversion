@@ -11,6 +11,11 @@ const SectionStyled = styled.section`
   
 `
 
+const TitleStyled = styled.h1`
+  margin-bottom: 16px;
+  font-size: 28px;
+`
+
 const WrapperDropdownStyled = styled.div`
   display: flex;
   align-items: center;
@@ -104,6 +109,7 @@ const CurrencyConverter = () => {
 
   return (
     <SectionStyled>
+      <TitleStyled>Conversor de moedas</TitleStyled>
       <WrapperFieldStyled>
         <InputAmount amount={amount} handleChange={setAmount} />
         <WrapperDropdownStyled>
