@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import currencies from '../../mocks/currencies.json'
 import CurrencyItem, { getCurrencyFlag } from './CurrencyItem'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const DropdownWrapperStyled = styled.div`
   position: relative;
@@ -27,7 +27,9 @@ const DropdownWrapperStyled = styled.div`
     position: absolute;
     right: 0%;
     top: 50%;
-    transform: translate(-24px, -50%) rotate(135deg);
+    z-index: 10;
+    /* transform: translate(-24px, -50%) rotate(135deg); */
+    transform: ${props => props.$statusDropdown ? 'translate(-24px, 0) rotate(-45deg)' : 'translate(-24px, -50%) rotate(135deg)'};
   }
 
   @media screen and (max-width: 720px) {
@@ -51,6 +53,8 @@ const DropdownSelected = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 24px;
+  visibility: ${props => props.$statusDropdown ? 'hidden' : 'visible'};
+  z-index: ${props => props.$statusDropdown ? '-1' : '1'};;
 
   & > img {
     width: 21px;
@@ -96,14 +100,41 @@ const DropdownListStyled = styled.ul`
   overflow: auto;
   top: 100%;
   width: 100%;
-  background-color: white;
+  background-color: #e1e1e1;
+  min-height: 200px;
   padding: 0;
-  z-index: 1;
+  z-index: 11;
   border-radius: 8px;
 `
 
 const DropdownListItemStyled = styled.li`
-  
+  & > input {
+    width: 100%;
+    border: none;
+    background-color: white;
+    padding: 12px 24px;
+  }
+`
+
+const SearchInputStyled = styled.div`
+  display: block;
+  visibility: ${props => props.$statusDropdown ? 'visible' : 'hidden'};
+  z-index: ${props => props.$statusDropdown ? '1' : '-1'};;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 37px;
+  width: 100%;
+  & > input {
+    width: calc(100% - 64px);
+    border: none;
+    background-color: transparent;
+    padding: 12px 24px;
+    font-size: 16px;
+    &:focus {
+      outline: none;
+    }
+  }
 `
 
 
@@ -111,6 +142,8 @@ const CurrencyDropdown = ({ label, selectedCurrency, handleCurrencyChange }) => 
 
   const [dropdownStatus, setDropdownStatus] = useState(false);
   const [currencies, setCurrencies] = useState([])
+  const [searchCurrency, setSearchCurrency] = useState('')
+  const inputSearch = useRef()
 
   useEffect(() => {
     const loadCurrencies = async () => {
@@ -121,19 +154,30 @@ const CurrencyDropdown = ({ label, selectedCurrency, handleCurrencyChange }) => 
     loadCurrencies()
   }, [])
 
-  const handleClickDropdown = () => {
-    console.log('clicando no dropdown')
-    setDropdownStatus(!dropdownStatus)
+  const handleClickDropdown = (event) => {
+    const wrapperDropdown = event.target.closest('.dropdown-wrapper')
+    const inputSearch = wrapperDropdown.querySelector('.input-search')
+    
+    if (!dropdownStatus) {
+      setTimeout(() => {
+        inputSearch.focus()
+      }, 10);
+    }
+
+    if (!event.target.classList.contains('input-search')) {
+      setDropdownStatus(!dropdownStatus)
+    }
   }  
 
   return (
     <DropdownWrapperStyled 
+      $statusDropdown={dropdownStatus}
       className="dropdown-wrapper" 
       onClick={handleClickDropdown}
     >
       <LabelStyled>{ label }</LabelStyled>
       <DropdownStyled className="dropdown">
-        <DropdownSelected className='dropdown-selected'>
+        <DropdownSelected className='dropdown-selected' $statusDropdown={dropdownStatus}>
           {getCurrencyFlag(selectedCurrency) 
             ?
               <img src={getCurrencyFlag(selectedCurrency)} alt={`Bandeira do país ${selectedCurrency.country}`} />
@@ -145,17 +189,39 @@ const CurrencyDropdown = ({ label, selectedCurrency, handleCurrencyChange }) => 
             <span>{selectedCurrency.name_ptbr}</span>
           </p>
         </DropdownSelected>
+        <SearchInputStyled $statusDropdown={dropdownStatus}>
+          <input 
+            type="text"
+            className='input-search' 
+            ref={inputSearch}
+            value={searchCurrency} 
+            onChange={(event) => setSearchCurrency(event.target.value)}
+            placeholder='Digite para buscar...' 
+          />
+        </SearchInputStyled>
         <DropdownListStyled $statusDropdown={dropdownStatus}>
-          {currencies.map((currency) => {
-            return (
-              <DropdownListItemStyled key={currency.code}>
-                <CurrencyItem 
-                  currency={currency} 
-                  handleSelectCurrency={handleCurrencyChange} 
-                />
-              </DropdownListItemStyled>
-            )
-          })}
+          {searchCurrency !== ''
+            ?
+              currencies.filter(currency => currency.code.includes(searchCurrency)).map(currency => (
+                <DropdownListItemStyled key={currency.code}>
+                  <CurrencyItem 
+                    currency={currency} 
+                    handleSelectCurrency={handleCurrencyChange} 
+                  />
+                </DropdownListItemStyled>  
+              ))
+            :
+              currencies.map((currency) => {
+                return (
+                  <DropdownListItemStyled key={currency.code}>
+                    <CurrencyItem 
+                      currency={currency} 
+                      handleSelectCurrency={handleCurrencyChange} 
+                    />
+                  </DropdownListItemStyled>
+                )
+              })
+          }
         </DropdownListStyled>
       </DropdownStyled>
     </DropdownWrapperStyled>
