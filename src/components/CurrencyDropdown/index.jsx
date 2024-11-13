@@ -167,7 +167,7 @@ const CurrencyDropdown = ({ label, selectedCurrency, handleCurrencyChange }) => 
     if (!event.target.classList.contains('input-search')) {
       setDropdownStatus(!dropdownStatus)
     }
-  }  
+  }
 
   return (
     <DropdownWrapperStyled 
@@ -195,14 +195,14 @@ const CurrencyDropdown = ({ label, selectedCurrency, handleCurrencyChange }) => 
             className='input-search' 
             ref={inputSearch}
             value={searchCurrency} 
-            onChange={(event) => setSearchCurrency(event.target.value)}
+            onChange={(event) => setSearchCurrency(event.target.value.toLowerCase())}
             placeholder='Digite para buscar...' 
           />
         </SearchInputStyled>
         <DropdownListStyled $statusDropdown={dropdownStatus}>
           {searchCurrency !== ''
             ?
-              currencies.filter(currency => currency.code.includes(searchCurrency)).map(currency => (
+              currencies.filter(currency => currency.code.toLowerCase().includes(searchCurrency) || currency.name_ptbr.toLowerCase().includes(searchCurrency) || currency.country_ptbr.toLowerCase().includes(searchCurrency)).map(currency => (
                 <DropdownListItemStyled key={currency.code}>
                   <CurrencyItem 
                     currency={currency} 
