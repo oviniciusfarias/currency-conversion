@@ -1,0 +1,13 @@
+:root {
+  --font-family-title: "Montserrat", serif;
+  --font-family-text: "Roboto Mono", monospace;
+  --font-family-text-secondary: "Roboto Condensed", sans-serif;
+  --bg-color: #0d1b2a;
+  --bg-color-contrast: #1b263b;
+  --text-color: #fbf9ff;
+  --highlight-color: #22D4FD;
+  --font-size-default: 1.2rem;
+  --font-size-main-title: 2.25rem;
+  --font-size-subtitle: 1.2rem;
+  --font-size-cta: 1rem;
+}
