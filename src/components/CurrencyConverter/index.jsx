@@ -14,6 +14,10 @@ const SectionStyled = styled.section`
 const WrapperDropdownStyled = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+    max-width: 480px;
+  }
 `
 
 const WrapperFieldStyled = styled.div`
@@ -21,6 +25,9 @@ const WrapperFieldStyled = styled.div`
   align-items: stretch;
   justify-content: space-between;
   margin-bottom: 16px;
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+  }
 `
 
 const WrapperButtonStyled = styled.div`

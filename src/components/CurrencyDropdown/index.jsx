@@ -29,6 +29,10 @@ const DropdownWrapperStyled = styled.div`
     top: 50%;
     transform: translate(-24px, -50%) rotate(135deg);
   }
+
+  @media screen and (max-width: 720px) {
+    width: 100%;
+  }
 `
 
 const LabelStyled = styled.span`
@@ -94,6 +98,8 @@ const DropdownListStyled = styled.ul`
   width: 100%;
   background-color: white;
   padding: 0;
+  z-index: 1;
+  border-radius: 8px;
 `
 
 const DropdownListItemStyled = styled.li`

@@ -8,6 +8,10 @@ const InputWrapperStyled = styled.div`
   border-radius: 8px;
   padding: 16px 24px;
   margin-right: 16px;
+  @media screen and (max-width: 720px) {
+    width: 100%;
+    margin-right: 0;
+  }
 `
 
 const LabelStyled = styled.span`
@@ -21,11 +25,18 @@ const InputStyled = styled.input`
   border: none;
   width: 70px;
   font-size: 24px;
+  @media screen and (max-width: 720px) {
+    width: auto;
+  }
 `
 
 const InputAmount = ({ amount, handleChange }) => {
+  const focusInput = () => {
+    document.getElementById('amount').focus()
+  }
+
   return (
-    <InputWrapperStyled className="input-wrapper">
+    <InputWrapperStyled className="input-wrapper" onClick={focusInput}>
       <LabelStyled>
         Valor
       </LabelStyled>
