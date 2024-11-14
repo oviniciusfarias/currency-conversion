@@ -94,9 +94,6 @@ const CurrencyConverter = () => {
     
     if (amount && fromCurrency && toCurrency) {
       const result = await convertCurrency(Number(amount), fromCurrency, toCurrency)
-  
-      console.log('result', result)
-      
       setConversionResult(result)
     }
   }
@@ -120,7 +117,6 @@ const CurrencyConverter = () => {
               selectedCurrency={fromCurrency} 
               handleCurrencyChange={setFromCurrency} 
             />
-
             
             <CurrencyDropdown 
               label="Para" 

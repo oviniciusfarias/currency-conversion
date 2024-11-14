@@ -11,8 +11,6 @@ const useCurrency = () => {
     const cacheKey = `rate_${fromCurrencyCode}`
     const cacheExpiryKey = localStorage.getItem(`${cacheKey}_expiry`)
 
-    console.log('currencyData 1', currencyData);
-
     if (currencyData[fromCurrencyCode]) {
       const cacheExpiry = localStorage.getItem(cacheExpiryKey)
 
